@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.Colors
 import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -26,6 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.digikala1.R
+import com.example.digikala1.data.model.basket.CartDetails
 import com.example.digikala1.ui.theme.darkText
 import com.example.digikala1.ui.theme.digikalaRed
 import com.example.digikala1.ui.theme.spacing
@@ -33,9 +32,16 @@ import com.example.digikala1.util.DigitHelper
 import com.example.digikala1.util.DigitHelper.digitByLocateAndSeparator
 
 @Composable
-fun CartPriceDetailSection() {
+fun CartPriceDetailSection(
+    item: CartDetails
+) {
     Column(
-        modifier = Modifier.padding(MaterialTheme.spacing.medium)
+        modifier = Modifier.padding(
+            start = MaterialTheme.spacing.medium,
+            end = MaterialTheme.spacing.medium,
+            top = MaterialTheme.spacing.medium,
+            bottom = 120.dp
+        )
     ) {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -48,7 +54,11 @@ fun CartPriceDetailSection() {
             )
 
             Text(
-                text = "${DigitHelper.digitByLocateAndSeparator("۳")}${stringResource(id = R.string.goods)} ",
+                text = "${DigitHelper.digitByLocateAndSeparator(item.totalCount.toString())}${
+                    stringResource(
+                        id = R.string.goods
+                    )
+                } ",
                 style = MaterialTheme.typography.caption,
                 color = Color.Gray
             )
@@ -56,9 +66,20 @@ fun CartPriceDetailSection() {
         }
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.semiLarge))
-        PriceRow("dgfg", 233, 5)
-        PriceRow("dgfg", 233, 5)
-        PriceRow("dgfg", 233, 5)
+        PriceRow(
+            stringResource(id = R.string.goods_price),
+            digitByLocateAndSeparator(item.totalPrice.toString())
+        )
+        val discountPercent = (1-item.payablePrice.toDouble()/item.totalPrice.toDouble())*100
+        PriceRow(
+            stringResource(id = R.string.goods_discount),
+            digitByLocateAndSeparator(item.totalDiscount.toString()),
+            discountPercent.toInt()
+        )
+        PriceRow(
+            stringResource(id = R.string.goods_total_price),
+            digitByLocateAndSeparator(item.payablePrice.toString()),
+        )
 
         Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
 
@@ -70,7 +91,7 @@ fun CartPriceDetailSection() {
             Text(
                 text = stringResource(id = R.string.dot_bullet),
                 color = Color.Gray,
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.h6,
                 modifier = Modifier.padding(MaterialTheme.spacing.extraSmall)
             )
             Text(
@@ -89,15 +110,16 @@ fun CartPriceDetailSection() {
                 .alpha(0.6f),
             color = Color.LightGray
         )
-        DigiClubScore(7)
+        DigiClubScore(item.payablePrice)
     }
 }
 
 @Composable
 private fun DigiClubScore(
-
-    score: Int,
+    payedPrice: Long
 ) {
+    val score =payedPrice/100_000
+
     Spacer(modifier = Modifier.height(MaterialTheme.spacing.medium))
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -111,7 +133,7 @@ private fun DigiClubScore(
                 painter = painterResource(id = R.drawable.digi_score),
                 contentDescription = "",
                 modifier = Modifier
-                    .size(22.dp)
+                    .size(20.dp)
                     .padding(MaterialTheme.spacing.extraSmall)
             )
             Text(
@@ -123,21 +145,21 @@ private fun DigiClubScore(
 
         }
         Text(
-            text = "${digitByLocateAndSeparator(score.toString())}${stringResource(id = R.string.score)}",
+            text = "${digitByLocateAndSeparator(score.toString())} ${stringResource(id = R.string.score)}",
             color = MaterialTheme.colors.darkText,
             style = MaterialTheme.typography.body2,
             textAlign = TextAlign.End,
             fontWeight = FontWeight.Medium
         )
-
-
     }
-
+    Spacer(modifier = Modifier.height(MaterialTheme.spacing.biggerSmall))
     Text(
-        text = stringResource(id = R.string.shipping_cost_alert),
+        text = stringResource(id = R.string.digiclub_description),
         color = Color.Gray,
         style = MaterialTheme.typography.caption,
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = MaterialTheme.spacing.biggerSmall)
     )
 }
 
@@ -145,12 +167,14 @@ private fun DigiClubScore(
 @Composable
 private fun PriceRow(
     title: String,
-    price: Long,
+    price: String,
     discount: Int = 0,
 ) {
     var color = MaterialTheme.colors.darkText
+    var ourPrice = price
     if (discount > 0) {
         color = MaterialTheme.colors.digikalaRed
+        ourPrice = " (${digitByLocateAndSeparator( discount.toString())}%) $price"
     }
 
 
@@ -170,7 +194,7 @@ private fun PriceRow(
         )
         Row {
             Text(
-                text = DigitHelper.digitByLocateAndSeparator(price.toString()),
+                text = ourPrice,
                 style = MaterialTheme.typography.body2,
                 fontWeight = FontWeight.SemiBold,
                 color = color,

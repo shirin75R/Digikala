@@ -1,7 +1,8 @@
 package com.example.digikala1.di
 
-import com.example.digikala1.data.remote.BasketApiInterface
-import com.example.digikala1.data.remote.CategoryApiInterface
+
+import com.example.digikala1.data.remote.HomeApiInterface
+import com.example.digikala1.data.remote.ProfileApiInterface
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,11 +12,11 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object BasketApiInterfaceModule {
+object ProfileApiInterfaceModule {
 
     @Provides
     @Singleton
-    fun provideBasketApiService(retrofit: Retrofit): BasketApiInterface =
-        retrofit.create(BasketApiInterface::class.java)
+    fun provideProfileApiService(retrofit: Retrofit): ProfileApiInterface =
+        retrofit.create(ProfileApiInterface::class.java)
 
 }

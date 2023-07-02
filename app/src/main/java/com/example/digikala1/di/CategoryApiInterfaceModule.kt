@@ -14,7 +14,7 @@ object CategoryApiInterfaceModule {
 
     @Provides
     @Singleton
-    fun provideHomeApiService(retrofit: Retrofit): CategoryApiInterface =
+    fun provideCategoryApiService(retrofit: Retrofit): CategoryApiInterface =
         retrofit.create(CategoryApiInterface::class.java)
 
 }

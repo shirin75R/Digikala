@@ -33,6 +33,11 @@ val Colors.searchBarBg: Color
     @Composable
     get() = if (isLight) Color(0xFFF1F0EE) else Color (0xFF303235)
 
+
+val Colors.CursorColor: Color
+    @Composable
+    get() = Color(0xFF018577)
+
 val Colors.bottomBar: Color
     @Composable
     get() = if (isLight) Color(0xFFFFFFFF) else Color (0xFF303235)

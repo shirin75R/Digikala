@@ -9,6 +9,8 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -18,10 +20,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
 
 import com.example.digikala1.R
+import com.example.digikala1.ui.screens.basket.IconWithBadge
 import com.example.digikala1.ui.theme.bottomBar
 import com.example.digikala1.ui.theme.extraBoldNumber
 import com.example.digikala1.ui.theme.font_bold
@@ -29,11 +33,13 @@ import com.example.digikala1.ui.theme.selectedBottomBar
 import com.example.digikala1.ui.theme.unSelectedBottomBar
 import com.example.digikala1.util.Constants
 import com.example.digikala1.util.LocaleUtils
+import com.example.digikala1.viewmodels.BasketViewModel
 
 @Composable
 fun BottomNavigationBar(
     navController: NavController,
-    onItemClick: (BottomNavItem) -> Unit
+    onItemClick: (BottomNavItem) -> Unit,
+    viewModel: BasketViewModel = hiltViewModel()
 ) {
     LocaleUtils.setLocate(LocalContext.current, Constants.USER_LANGUAGE)
     val items = listOf(
@@ -71,6 +77,7 @@ fun BottomNavigationBar(
             backgroundColor = MaterialTheme.colors.bottomBar,
             elevation = 5.dp
         ) {
+            val cartCounter by viewModel.currentCartItemsCount.collectAsState(0)
             items.forEachIndexed { index, item ->
                 val selected = item.rout == backStackEntry.value?.destination?.route
                 BottomNavigationItem(
@@ -81,17 +88,30 @@ fun BottomNavigationBar(
                     icon = {
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
                             if (selected) {
-                                Icon(
-                                    modifier = Modifier.height(24.dp),
-                                    painter = item.selectedIcon,
-                                    contentDescription = item.name
-                                )
+                                if (index == 2 && cartCounter > 0) {
+                                    IconWithBadge(
+                                        cartCounter = cartCounter, icon = item.selectedIcon
+                                    )
+                                } else {
+                                    Icon(
+                                        modifier = Modifier.height(24.dp),
+                                        painter = item.selectedIcon,
+                                        contentDescription = item.name
+                                    )
+                                }
+
                             } else {
-                                Icon(
-                                    modifier = Modifier.height(24.dp),
-                                    painter = item.deSelectedIcon,
-                                    contentDescription = item.name
-                                )
+                                if (index == 2 && cartCounter > 0) {
+                                    IconWithBadge(
+                                        cartCounter = cartCounter, icon = item.deSelectedIcon
+                                    )
+                                } else {
+                                    Icon(
+                                        modifier = Modifier.height(24.dp),
+                                        painter = item.deSelectedIcon,
+                                        contentDescription = item.name
+                                    )
+                                }
                             }
                             Text(
                                 text = item.name,

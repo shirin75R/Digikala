@@ -116,7 +116,7 @@ fun CircularCategoryItem(item: MainCategory) {
                 .padding(top = MaterialTheme.spacing.extraSmall),
             textAlign = TextAlign.Center,
             color = MaterialTheme.colors.darkText,
-            style = MaterialTheme.typography.h6,
+            style = MaterialTheme.typography.caption,
             fontWeight = FontWeight.SemiBold,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
