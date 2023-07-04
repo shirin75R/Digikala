@@ -15,12 +15,15 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.digikala1.BuildConfig.IV
 import com.example.digikala1.navigation.BottomNavigationBar
 import com.example.digikala1.navigation.SetupNavGraph
 import com.example.digikala1.ui.component.AppConfig
 import com.example.digikala1.ui.component.ChangeStatusBarColor
 import com.example.digikala1.ui.theme.Digikala1Theme
+import com.example.digikala1.util.AES
 import com.example.digikala1.util.Constants.ENGLISH_LANG
+import com.example.digikala1.util.Constants.KEY
 import com.example.digikala1.util.Constants.USER_LANGUAGE
 import com.example.digikala1.util.LocaleUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,7 +39,7 @@ class MainActivity : ComponentActivity() {
             Digikala1Theme {
                 navController = rememberNavController()
                 ChangeStatusBarColor(navController)
-                AppConfig()
+
 
                 Log.e("3636", USER_LANGUAGE)
                 LocaleUtils.setLocate(LocalContext.current, USER_LANGUAGE)

@@ -1,16 +1,17 @@
 package com.example.digikala1.data.remote
 
 import com.example.digikala1.data.model.ResponseResult
-import com.example.digikala1.data.model.home.AmazingItem
-import com.example.digikala1.data.model.home.MainCategory
-import com.example.digikala1.data.model.home.Slider
-import com.example.digikala1.data.model.home.StoreProduct
+import com.example.digikala1.data.model.profile.LoginRequest
+import com.example.digikala1.data.model.profile.LoginResponse
 import retrofit2.Response
-import retrofit2.http.GET
+import retrofit2.http.Body
+import retrofit2.http.POST
 
 interface ProfileApiInterface {
 
-    @GET("v1/getSlider")
-    suspend fun getSlider():Response<ResponseResult<List<Slider>>>
+    @POST("v1/login")
+    suspend fun login(
+        @Body login : LoginRequest
+    ):Response<ResponseResult<LoginResponse>>
 
 }

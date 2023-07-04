@@ -45,6 +45,9 @@ val Colors.bottomBar: Color
 val Colors.darkText: Color
     @Composable
     get() = if (isLight) Color(0xFF414244) else Color (0xFFD8D8D8)
+val Colors.settingArrow: Color
+    @Composable
+    get() = if (isLight) Color(0xFF9E9FB1) else Color (0xFFD8D8D8)
 
 val Colors.amber: Color
     @Composable

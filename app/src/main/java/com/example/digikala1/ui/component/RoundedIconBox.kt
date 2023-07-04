@@ -27,6 +27,7 @@ import com.example.digikala1.ui.theme.LocalShape
 import com.example.digikala1.ui.theme.LocalSpacing
 import com.example.digikala1.ui.theme.darkText
 
+
 @Composable
 fun RoundedIconBox(
     title: String,
